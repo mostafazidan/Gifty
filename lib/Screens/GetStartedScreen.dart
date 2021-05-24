@@ -17,7 +17,7 @@ class _firstScreenState extends State<firstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Row(
+     /* bottomNavigationBar: Row(
         children: <Widget>[
           buildNavBarItem(Icons.home, 0, true),
           buildNavBarItem(Icons.search, 1, false),
@@ -25,7 +25,7 @@ class _firstScreenState extends State<firstScreen> {
           buildNavBarItem(Icons.archive, 3, false),
           buildNavBarItem(Icons.settings, 4, false),
         ],
-      ),
+      ),*/
       backgroundColor: Colors.white,
       body: Container(
           decoration: BoxDecoration(
@@ -138,6 +138,7 @@ class _firstScreenState extends State<firstScreen> {
     );
   }
 
+/*
   Widget buildNavBarItem(IconData icon, int index, bool isActive) {
     return GestureDetector(
       onTap: () {
@@ -168,4 +169,5 @@ class _firstScreenState extends State<firstScreen> {
       ),
     );
   }
+*/
 }

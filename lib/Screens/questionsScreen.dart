@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gridview/components/components.dart';
 import 'package:gridview/service.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'gridView.dart';
+
+var answer = new List();
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -58,10 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     groupValue: radioItem,
                     title: Text('Make a recommendation'),
                     value: 'Item 1',
-                    onChanged: (val) {
-                      setState(() {
-                        radioItem = val;
-                      });
+                    onChanged: (val) {setState(() {
+                      radioItem = val;
+                    });
+
                     },
                   ),
                 ),
@@ -73,10 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     groupValue: radioItem,
                     title: Text('Browse the categories'),
                     value: 'Item 2',
-                    onChanged: (val) {
-                      setState(() {
-                        radioItem = val;
-                      });
+                    //Method
+                    onChanged: (val) {setState(() {
+                      radioItem = val;
+                    });
                     },
                   ),
                 ),
@@ -90,12 +93,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Color(0xFFBF8989), //0xFFBF8989 CEAEAF E4B4B4
                     textColor: Colors.white,
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                    onPressed: () => setState(() {
+                    onPressed: ()  async{
 
                       if(radioItem =='Item 2'){
+                        print("Loooding");
+                        services s = new services();
+
+                        var l = [10 , 20,"Toys & Games ", "Sports & Outdoors "];
+                        // ignore: non_constant_identifier_names
+                        var LoadedData = await s.all(l);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => GiftScreen()),
+                          MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion: LoadedData,)),
                         );
                       }
                       else if(radioItem == 'Item 1') {
@@ -104,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           MaterialPageRoute(builder: (context) => MyNextPage()),
                         );
                       }
-                    }),
+                    },
                     child: Text(
                       "Next".toUpperCase(),
                       style: TextStyle(
@@ -124,17 +133,16 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class MyNextPage extends StatefulWidget {
-  MyNextPage({Key key, this.title}) : super(key: key);
+  MyNextPage({Key key,}) : super(key: key);
 
-  final String title;
 
   @override
   _MyNextPageState createState() => _MyNextPageState();
 }
 
 class _MyNextPageState extends State<MyNextPage> {
-  int currentValue = 16;
-  double value = 500.0;
+  int age = 16;
+  double price = 500.0;
 
   @override
   Widget build(BuildContext context) {
@@ -175,15 +183,15 @@ class _MyNextPageState extends State<MyNextPage> {
                 Container(
                   margin: EdgeInsets.only(left: 20),
                   child: Slider(
-                    value: value,
+                    value: price,
                     min: 0.0,
                     max: 1500.0,
                     divisions: 100,
-                    label: "$value",
+                    label: "$price",
                     activeColor: Color(0xFFBF8989),
                     inactiveColor: Color(0xFFEEEEEE),
                     onChanged: (newRating) {
-                      setState(() => value = newRating.roundToDouble());
+                      setState(() => price = newRating.roundToDouble());
                     },
                   ),
                 ),
@@ -213,12 +221,12 @@ class _MyNextPageState extends State<MyNextPage> {
                       //   ),
                       // ),
                       child: NumberPicker(
-                        value: currentValue,
+                        value: age,
                         minValue: 1,
                         maxValue: 50,
                         selectedTextStyle: TextStyle(color: Color(0xFFBF8989)),
                         onChanged: (newValue) {
-                          setState(() => currentValue = newValue);
+                          setState(() => age = newValue);
                         },
                         decoration: BoxDecoration(
                           border: new Border(
@@ -246,13 +254,16 @@ class _MyNextPageState extends State<MyNextPage> {
                     color: Color(0xFFBF8989), //0xFFBF8989 CEAEAF E4B4B4
                     textColor: Colors.white,
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                    onPressed: () => setState(() {
+                    onPressed: () {
+                      answer.add(price);
+                      answer.add(age);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MyQuestionPage(age:currentValue,price: value,)),
+                            builder: (context) =>
+                                MyQuestionPage(age: age,price: price,answerOfTheQuestion: answer )),
                       );
-                    }),
+                    },
                     child: Text(
                       "Next".toUpperCase(),
                       style: TextStyle(
@@ -272,10 +283,10 @@ class _MyNextPageState extends State<MyNextPage> {
 }
 
 class MyQuestionPage extends StatefulWidget {
-  MyQuestionPage({Key key, this.age,this.title, this.price}) : super(key: key);
+  MyQuestionPage({Key key, this.answerOfTheQuestion,this.age, this.price}) : super(key: key);
   final double price ;
-  final String title;
   final int age;
+  final List answerOfTheQuestion;
 
   @override
   _MyQuestionPage createState() => _MyQuestionPage();
@@ -539,6 +550,7 @@ class _MyQuestionPage extends State<MyQuestionPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 10),
+                    // ignore: deprecated_member_use
                     child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -552,7 +564,7 @@ class _MyQuestionPage extends State<MyQuestionPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage2(age: widget.age,price: widget.price,)),
+                                  builder: (context) => MyQuestionPage2(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
                             );
                           }),
                       child: Text(
@@ -575,10 +587,10 @@ class _MyQuestionPage extends State<MyQuestionPage> {
 }
 
 class MyQuestionPage2 extends StatefulWidget {
-  MyQuestionPage2({Key key,this.age,this.price, this.title}) : super(key: key);
+  MyQuestionPage2({Key key,this.age,this.answerOfTheQuestion,this.price}) : super(key: key);
   final double price;
-  final String title;
   final int age;
+  final List answerOfTheQuestion ;
 
   @override
   _MyQuestionPage2 createState() => _MyQuestionPage2();
@@ -699,6 +711,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 30),
+                    // ignore: deprecated_member_use
                     child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -712,7 +725,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage3(age :widget.age ,price: widget.price, )),
+                                  builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age :widget.age ,price: widget.price, )),
                             );
                           }),
                       child: Text(
@@ -818,6 +831,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 30),
+                    // ignore: deprecated_member_use
                     child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -831,7 +845,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage3(age: widget.age,price: widget.price,)),
+                                  builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
                             );
                           }),
                       child: Text(
@@ -949,6 +963,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 30),
+                    // ignore: deprecated_member_use
                     child: FlatButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -960,7 +975,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyQuestionPage3(age: widget.age,price: widget.price,)),
+                              builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
                         );
                       }),
                       child: Text(
@@ -990,29 +1005,38 @@ class Interest {
     this.id,
     this.name,
   });
+  @override
+  String toString(){
+    return "$name";
+  }
 }
 
 class MyQuestionPage3 extends StatefulWidget {
-  MyQuestionPage3({Key key,this.age,this.price, this.title=''}) : super(key: key);
+  MyQuestionPage3({Key key,this.answerOfTheQuestion,this.age,this.categoryies,this.price, this.title=''}) : super(key: key);
 
   final String title;
   final int age;
   final double price;
+  final List categoryies;
+  final List answerOfTheQuestion;
 
   @override
   _MyQuestionPage3 createState() => _MyQuestionPage3();
 }
 
 class _MyQuestionPage3 extends State<MyQuestionPage3> {
+
   static List<Interest> _interest = [
-    Interest(id: 1, name: "Sport"),
-    Interest(id: 2, name: "Reading"),
-    Interest(id: 3, name: "Watch Movies"),
-    Interest(id: 4, name: "Arts & Painting"),
-    Interest(id: 5, name: "Kitchen & Cooking"),
-    Interest(id: 6, name: "Swimming"),
-    Interest(id: 7, name: "Fishing"),
-    Interest(id: 8, name: "Music"),
+    Interest(id: 1, name: "Baby Products "),
+    Interest(id: 2, name: "Beauty & Personal Care "),
+    Interest(id: 3, name: "Clothing, Shoes & Jewelry "),
+    Interest(id: 4, name: "Electronics "),
+    Interest(id: 5, name: "Home & Kitchen "),
+    Interest(id: 6, name: "Office Products "),
+    Interest(id: 7, name: "Pet Supplies "),
+    Interest(id: 8, name: "Sports & Outdoors "),
+    Interest(id: 9, name: "Tools & Home Improvement "),
+    Interest(id: 10, name: "Toys & Games "),
   ];
   final _items = _interest
       .map((interest) => MultiSelectItem<Interest>(interest, interest.name))
@@ -1092,6 +1116,7 @@ class _MyQuestionPage3 extends State<MyQuestionPage3> {
       floatingActionButton: Center(
         child: Container(
           margin: EdgeInsets.only(top: 300),
+          // ignore: deprecated_member_use
           child: FlatButton(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
@@ -1104,19 +1129,28 @@ class _MyQuestionPage3 extends State<MyQuestionPage3> {
                 return _MyQuestionPage3();
               }else {
                 //Loading Data
-                print("Loooding");
+                print("Loading");
                 services s = new services();
-                var answer = new List();
-                answer.add(widget.age);
-                answer.add(widget.price);
-                answer.add(_selectedinterest);
-                var l = [10 , 20,"Toys & Games ", "Automotive "];
-                var LoadedData = await s.all(l);
+                var LoadedData ;
+
+                // ignore: deprecated_member_use
+                if(widget.answerOfTheQuestion.isEmpty){
+                  var categories = new List();
+                  categories.add(_selectedinterest);
+                  LoadedData = await s.browseTheCategories(categories);
+                }else {
+                  var l = [10, 20, "Toys & Games ", "Sports & Outdoors "];
+                  answer.add(_selectedinterest);
+
+                  LoadedData = await s.all(l);
+                  // ignore: non_constant_identifier_names
+
+                }
+                 //await s.recommend("Electronic Snap Circuits Mini Kits Classpack, FM Radio, Motion Detector, Music Box (Set of 5)");
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion: LoadedData,)),
-                );
+                  MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion : LoadedData )));
               }
             },
             child: Text(

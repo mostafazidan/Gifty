@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:gridview/components/components.dart';
 import 'package:gridview/service.dart';
 import 'ProductDetailsScreen.dart';
 
@@ -21,8 +22,7 @@ class _GiftScreenState extends State<GiftScreen> {
       onTap: () async{
         print("Loading");
         services s = new services();
-        var x = await s.recomend(widget.productFromQuestion[index]["Product Name"]);
-        print(x[2]["Image Url"]);
+        var x = await s.recommend(widget.productFromQuestion[index]["Product Name"]);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -58,7 +58,7 @@ class _GiftScreenState extends State<GiftScreen> {
                 ),
               ),
               Text(
-                ProductDetails["Selling Price"].toString()+' \$',
+                ProductDetails["Category"].toString()+' \$',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -80,10 +80,15 @@ class _GiftScreenState extends State<GiftScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(228, 180, 180, 1),
+          title: Text("Gift"),
         ),
         body: ListView(
           children: [
+            //Search Bar
+           SearchBar(),
+          // End Search Bar
 
+          //Your Gift Text
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
               child: Text(
@@ -95,6 +100,7 @@ class _GiftScreenState extends State<GiftScreen> {
                 ),
               ),
             ),
+            // End Your Gift Text
             SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: GridView.builder(
