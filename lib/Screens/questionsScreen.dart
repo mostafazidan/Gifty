@@ -96,15 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: ()  async{
 
                       if(radioItem =='Item 2'){
-                        print("Loooding");
-                        services s = new services();
-
-                        var l = [10 , 20,"Toys & Games ", "Sports & Outdoors "];
-                        // ignore: non_constant_identifier_names
-                        var LoadedData = await s.all(l);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion: LoadedData,)),
+                          MaterialPageRoute(builder: (context) => MyQuestionPage3()),
                         );
                       }
                       else if(radioItem == 'Item 1') {
@@ -1027,16 +1021,17 @@ class MyQuestionPage3 extends StatefulWidget {
 class _MyQuestionPage3 extends State<MyQuestionPage3> {
 
   static List<Interest> _interest = [
-    Interest(id: 1, name: "Baby Products "),
-    Interest(id: 2, name: "Beauty & Personal Care "),
-    Interest(id: 3, name: "Clothing, Shoes & Jewelry "),
-    Interest(id: 4, name: "Electronics "),
-    Interest(id: 5, name: "Home & Kitchen "),
-    Interest(id: 6, name: "Office Products "),
-    Interest(id: 7, name: "Pet Supplies "),
-    Interest(id: 8, name: "Sports & Outdoors "),
-    Interest(id: 9, name: "Tools & Home Improvement "),
-    Interest(id: 10, name: "Toys & Games "),
+    Interest(id: 1, name: "Toys & Games"),
+    Interest(id: 2, name: "Sports & Outdoors"),
+    Interest(id: 3, name: "Clothing, Shoes & Jewelry"),
+    Interest(id: 4, name: "Electronics"),
+    Interest(id: 5, name: "Home & Kitchen"),
+    Interest(id: 6, name: "Office Products"),
+    Interest(id: 7, name: "Tools & Home Improvement"),
+    Interest(id: 8, name: "Beauty & Personal Care"),
+    Interest(id: 9, name: "Pet Supplies"),
+    Interest(id: 10, name: "Baby Products"),
+
   ];
   final _items = _interest
       .map((interest) => MultiSelectItem<Interest>(interest, interest.name))
@@ -1132,22 +1127,20 @@ class _MyQuestionPage3 extends State<MyQuestionPage3> {
                 print("Loading");
                 services s = new services();
                 var LoadedData ;
-
-                // ignore: deprecated_member_use
-                if(widget.answerOfTheQuestion.isEmpty){
-                  var categories = new List();
-                  categories.add(_selectedinterest);
-                  LoadedData = await s.browseTheCategories(categories);
-                }else {
-                  var l = [10, 20, "Toys & Games ", "Sports & Outdoors "];
-                  answer.add(_selectedinterest);
-
-                  LoadedData = await s.all(l);
-                  // ignore: non_constant_identifier_names
-
-                }
-                 //await s.recommend("Electronic Snap Circuits Mini Kits Classpack, FM Radio, Motion Detector, Music Box (Set of 5)");
-
+                  if(answer.isEmpty) {
+                    var categories = new List();
+                    for (int i = 0; i < _selectedinterest.length; i++) {
+                      String x = _selectedinterest[i].name;
+                      categories.add(x);
+                    }
+                    LoadedData = await s.browseTheCategories(categories);
+                  }else {
+                    for (int i = 0; i < _selectedinterest.length; i++) {
+                      String x = _selectedinterest[i].name;
+                      answer.add(x);
+                    }
+                    LoadedData = await s.all(answer);
+                  }
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion : LoadedData )));

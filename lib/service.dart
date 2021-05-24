@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 class services {
 
   getData(url) async {
-    http.Response response = await http.get(url);
+    try {
+      http.Response response = await http.get(url);
       var decodedData = convert.jsonDecode(response.body);
       var mapedData = new List();
       for (int i = 1; i < decodedData.length; i++) {
@@ -19,7 +20,9 @@ class services {
         });
       }
       return mapedData;
-
+    }catch(e){
+      print(e);
+    }
   }
 
   // ignore: non_constant_identifier_names
@@ -32,43 +35,39 @@ class services {
   all(List answer) async {
     var mappedData = await getData(Uri.https('10.0.2.2:5000', '/all'));
 
-      var newData, recommendedData;
+      var  newData, recommendedData;
       // ignore: deprecated_member_use
       newData = new List();
       // ignore: deprecated_member_use
       recommendedData = new List();
 
-
       for (int i = 1; i < mappedData.length; i++) {
         if (double.parse(mappedData[i]["Selling Price"]) <= answer[0]) {
           if (answer[1] <= 8) {
-            if (mappedData[i]["Category"] == "Baby Products ") {
+            if (mappedData[i]["Category"] == "Baby Products") {
               recommendedData.add(mappedData[i]);
-
             }
           } else if (answer[1] > 8 && answer[1] <= 16) {
-            if (mappedData[i]["Category"] == "Baby Products " ||
-                mappedData[i]["Category"] == "Toys & Games ") {
+            if (mappedData[i]["Category"] == "Baby Products" ||
+                mappedData[i]["Category"] == "Toys & Games") {
               recommendedData.add(mappedData[i]);
-
-
             }
           } else if (mappedData[i]["Category"] != "Baby Products " &&
-              mappedData[i]["Category"] != "Toys & Games ") {
+              mappedData[i]["Category"] != "Toys & Games") {
             newData.add(mappedData[i]);
           }
         }
       }
+      print(newData[0]["Category"]);
       if (answer[1] > 16) {
         for (int  i = 0; i < newData.length; i++) {
-          for (int z = 0; z < answer.length; z++) {
-            if (newData[i]["Category"] == answer[2][z]) {
+          for (int z = 2; z < answer.length; z++) {
+            if (newData[i]["Category"] == answer[z]) {
               recommendedData.add(newData[i]);
             }
           }
         }
       }
-
       return recommendedData;
 
   }
