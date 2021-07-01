@@ -1,26 +1,39 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gridview/Screens/ProductDetailsScreen.dart';
+import 'package:gridview/Screens/gridView.dart'
+;import '../service.dart';
 
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class load extends StatefulWidget {
+  load({this.answer,this.categories}) ;
+  List answer ;
+  final List categories ;
   @override
   _loadState createState() => _loadState();
 }
 
 // ignore: camel_case_types
 class _loadState extends State<load> {
-
+  // ignore: non_constant_identifier_names
+  GetData() async{
+    services s = new services();
+    var LoadedData ;
+    if(widget.categories.isNotEmpty){
+      LoadedData = await s.browseTheCategories(widget.categories);
+    }else{
+      LoadedData = await s.all(widget.answer);
+    }
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion: LoadedData,answers: widget.answer,categories: widget.categories, )));
+  }
+  services s = new services();
   @override
   void initState() {
     super.initState();
-
-    Timer(Duration(seconds:10),
-            ()=>Navigator.push(
-            context, MaterialPageRoute(builder: (context)=>ProductScreen())));
+    GetData();
   }
 
   @override
@@ -37,10 +50,17 @@ class _loadState extends State<load> {
               ),
               SizedBox(height: 30),
               Text(
-                "Please Wait...",
+                "Searching for your gift",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
+                  color: Colors.white,
+                  fontSize: 25.0,
+                ),
+              ),
+              Text(
+                "Please wait...",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25.0,
                 ),
               ),
             ],

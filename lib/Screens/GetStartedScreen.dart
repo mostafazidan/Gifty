@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gridview/components/navbar.dart';
 import 'package:gridview/service.dart';
 import 'questionsScreen.dart';
 
@@ -17,15 +18,6 @@ class _firstScreenState extends State<firstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* bottomNavigationBar: Row(
-        children: <Widget>[
-          buildNavBarItem(Icons.home, 0, true),
-          buildNavBarItem(Icons.search, 1, false),
-          buildNavBarItem(Icons.inbox, 2, false),
-          buildNavBarItem(Icons.archive, 3, false),
-          buildNavBarItem(Icons.settings, 4, false),
-        ],
-      ),*/
       backgroundColor: Colors.white,
       body: Container(
           decoration: BoxDecoration(
@@ -58,6 +50,7 @@ class _firstScreenState extends State<firstScreen> {
                       children: <Widget>[
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Divider(
                               thickness: 5,
@@ -73,58 +66,59 @@ class _firstScreenState extends State<firstScreen> {
                               style: TextStyle(
                                 color: Color.fromRGBO(228, 180, 180, 1),
                                 fontSize: 30,
-                                fontFamily: 'Ubuntu',
+                                /*fontFamily: 'Ubuntu',*/
                               ),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              "From our smart app you can find\nthe appropriate gift which we\nrecommend it to you.",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 21,
+                            Container(
+                              padding: EdgeInsets.only(
+                                  left: 30, right: 30, top: 7, bottom: 7),
+                              child: Text(
+                                "From our smart app you can find the appropriate gift which we recommend it to you.",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 24,
+                                ),
                               ),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             // ignore: deprecated_member_use
-                            FlatButton(
-                              onPressed: () async {
-
-                                // var l = [10 , 20,"Pet Supplies ", "Automotive "];
-                                // var x = await s.all(l);
-                                // print(x[1]);
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyHomePage()),
-                                );
-                              },
-                              padding: EdgeInsets.all(0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(228, 180, 180, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                padding: EdgeInsets.only(
-                                    left: 28, right: 28, top: 7, bottom: 7),
-                                child: Text(
-                                  "Get Started",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontFamily: "Ubuntu",
-                                    fontWeight: FontWeight.bold,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                FlatButton(
+                                  onPressed: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyHomePage()),
+                                    );
+                                  },
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(228, 180, 180, 1),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    padding: EdgeInsets.only(
+                                        left: 28, right: 28, top: 7, bottom: 7),
+                                    child: Text(
+                                      "Get Started",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
+                              ],
                             ),
                           ],
                         ),
@@ -135,39 +129,10 @@ class _firstScreenState extends State<firstScreen> {
               ],
             ),
           )),
+
     );
   }
 
-/*
-  Widget buildNavBarItem(IconData icon, int index, bool isActive) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedItemIndex = index;
-        });
-      },
-      child: Container(
-        height: 50,
-        width: MediaQuery.of(context).size.width / 5,
-        decoration: index == _selectedItemIndex
-            ? BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      width: 4, color: Color.fromRGBO(228, 180, 180, 1)),
-                ),
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(228, 180, 180, 0.3),
-                    Color.fromRGBO(228, 180, 180, 0.015),
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ))
-            : BoxDecoration(),
-        child: Icon(icon,
-            color: index == _selectedItemIndex ? Colors.black : Colors.grey),
-      ),
-    );
-  }
-*/
+
+
 }

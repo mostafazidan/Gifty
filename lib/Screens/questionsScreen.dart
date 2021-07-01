@@ -5,18 +5,18 @@ import 'package:gridview/service.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'gridView.dart';
+import 'load.dart';
 
+// ignore: deprecated_member_use
 var answer = new List();
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   String radioItem = '';
   @override
@@ -40,31 +40,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Column(
               children: [
-                Container(
-                  child: SizedBox(
-                    child: Text(
-                      "What is your step?",
-                      style: TextStyle(
-                        color: Color(0xFFBF8989),
-                        fontSize: 24,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ),
-                  margin: EdgeInsets.only(top: 50),
-                ),
+                questionHeader(qHeader: "What is your step?"),
                 Container(
                   margin: EdgeInsets.fromLTRB(80, 35, 30, 20),
                   child: RadioListTile(
                     controlAffinity: ListTileControlAffinity.trailing,
-                    activeColor: Color(0xFFE4B4B4),
+                    activeColor: Color.fromRGBO(228, 180, 180, 1),
                     groupValue: radioItem,
                     title: Text('Make a recommendation'),
                     value: 'Item 1',
-                    onChanged: (val) {setState(() {
-                      radioItem = val;
-                    });
-
+                    onChanged: (val) {
+                      setState(() {
+                        radioItem = val;
+                      });
                     },
                   ),
                 ),
@@ -72,55 +60,33 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: EdgeInsets.fromLTRB(80, 0, 30, 0),
                   child: RadioListTile(
                     controlAffinity: ListTileControlAffinity.trailing,
-                    activeColor: Color(0xFFE4B4B4),
+                    activeColor: Color.fromRGBO(228, 180, 180, 1),
                     groupValue: radioItem,
                     title: Text('Browse the categories'),
                     value: 'Item 2',
                     //Method
-                    onChanged: (val) {setState(() {
-                      radioItem = val;
-                    });
+                    onChanged: (val) {
+                      setState(() {
+                        radioItem = val;
+                      });
                     },
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  // ignore: deprecated_member_use
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: Color(0xFFBF8989), //0xFFBF8989 CEAEAF E4B4B4
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                    onPressed: ()  async{
-
-                      if(radioItem =='Item 2'){
-                        print("Loooding");
-                        services s = new services();
-
-                        var l = [10 , 20,"Toys & Games ", "Sports & Outdoors "];
-                        // ignore: non_constant_identifier_names
-                        var LoadedData = await s.all(l);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion: LoadedData,)),
-                        );
-                      }
-                      else if(radioItem == 'Item 1') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyNextPage()),
-                        );
-                      }
-                    },
-                    child: Text(
-                      "Next".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
+                nextButtom(
+                  onp: ()  {
+                    if (radioItem == 'Item 2') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyQuestionPage3()),
+                      );
+                    } else if (radioItem == 'Item 1') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyNextPage()),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -133,8 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class MyNextPage extends StatefulWidget {
-  MyNextPage({Key key,}) : super(key: key);
-
+  MyNextPage({
+    Key key,
+  }) : super(key: key);
 
   @override
   _MyNextPageState createState() => _MyNextPageState();
@@ -172,7 +139,7 @@ class _MyNextPageState extends State<MyNextPage> {
                       Text(
                         "Budget",
                         style: TextStyle(
-                          color: Color(0xFFBF8989),
+                          color: Color.fromRGBO(228, 180, 180, 1),
                           fontSize: 24,
                           letterSpacing: 1,
                         ),
@@ -188,7 +155,7 @@ class _MyNextPageState extends State<MyNextPage> {
                     max: 1500.0,
                     divisions: 100,
                     label: "$price",
-                    activeColor: Color(0xFFBF8989),
+                    activeColor: Color.fromRGBO(228, 180, 180, 1),
                     inactiveColor: Color(0xFFEEEEEE),
                     onChanged: (newRating) {
                       setState(() => price = newRating.roundToDouble());
@@ -202,7 +169,7 @@ class _MyNextPageState extends State<MyNextPage> {
                       Text(
                         "Age",
                         style: TextStyle(
-                          color: Color(0xFFBF8989),
+                          color: Color.fromRGBO(228, 180, 180, 1),
                           fontSize: 24,
                           letterSpacing: 1,
                         ),
@@ -214,17 +181,12 @@ class _MyNextPageState extends State<MyNextPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(
-                      //     color: Color(0xFFBF8989),
-                      //     style: BorderStyle.solid,
-                      //   ),
-                      // ),
                       child: NumberPicker(
                         value: age,
                         minValue: 1,
                         maxValue: 50,
-                        selectedTextStyle: TextStyle(color: Color(0xFFBF8989)),
+                        selectedTextStyle:
+                        TextStyle(color: Color.fromRGBO(228, 180, 180, 1)),
                         onChanged: (newValue) {
                           setState(() => age = newValue);
                         },
@@ -244,34 +206,18 @@ class _MyNextPageState extends State<MyNextPage> {
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                  // ignore: deprecated_member_use
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: Color(0xFFBF8989), //0xFFBF8989 CEAEAF E4B4B4
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                    onPressed: () {
-                      answer.add(price);
-                      answer.add(age);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MyQuestionPage(age: age,price: price,answerOfTheQuestion: answer )),
-                      );
-                    },
-                    child: Text(
-                      "Next".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ),
+                nextButtom(onp: () {
+                  answer.add(price);
+                  answer.add(age);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyQuestionPage(
+                            age: age,
+                            price: price,
+                            answerOfTheQuestion: answer)),
+                  );
+                }),
               ],
             ),
             alignment: FractionalOffset.topCenter,
@@ -283,8 +229,9 @@ class _MyNextPageState extends State<MyNextPage> {
 }
 
 class MyQuestionPage extends StatefulWidget {
-  MyQuestionPage({Key key, this.answerOfTheQuestion,this.age, this.price}) : super(key: key);
-  final double price ;
+  MyQuestionPage({Key key, this.answerOfTheQuestion, this.age, this.price})
+      : super(key: key);
+  final double price;
   final int age;
   final List answerOfTheQuestion;
 
@@ -318,22 +265,8 @@ class _MyQuestionPage extends State<MyQuestionPage> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "What does he/she mean to you?",
-                            style: TextStyle(
-                              color: Color(0xFFBF8989),
-                              fontSize: 24,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  questionHeader(
+                    qHeader: "What does he/she mean to you?",
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -345,104 +278,26 @@ class _MyQuestionPage extends State<MyQuestionPage> {
                           looping: true,
                           onSelectedItemChanged: (int index) {},
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "Father",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Mother",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-
-                            Center(
-                              child: Text(
-                                "Friend",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Brother",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Sister",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Son",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
+                            CenterName(Name: "Father"),
+                            CenterName(Name: "Mother"),
+                            CenterName(Name: "Friend"),
+                            CenterName(Name: "Brother"),
+                            CenterName(Name: "Sister"),
+                            CenterName(Name: "Son"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Color(0xFFBF8989),
-                      //0xFFBF8989 CEAEAF E4B4B4
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                      onPressed: () =>
-                          setState(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage2(age: widget.age,price: widget.price,)),
-                            );
-                          }),
-                      child: Text(
-                        "Next".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ),
+                  nextButtom(onp: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyQuestionPage2(
+                            age: widget.age,
+                            price: widget.price,
+                          )
+                      ),);},
                   ),
                 ],
               ),
@@ -451,8 +306,7 @@ class _MyQuestionPage extends State<MyQuestionPage> {
           ),
         ),
       );
-    }
-    else{
+    } else {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -472,22 +326,8 @@ class _MyQuestionPage extends State<MyQuestionPage> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "What does he/she mean to you?",
-                            style: TextStyle(
-                              color: Color(0xFFBF8989),
-                              fontSize: 24,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  questionHeader(
+                    qHeader: "What does he/she mean to you?",
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -499,81 +339,36 @@ class _MyQuestionPage extends State<MyQuestionPage> {
                           looping: true,
                           onSelectedItemChanged: (int index) {},
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "Friend",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Brother",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Sister",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Son",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
+                            CenterName(Name: "Friend"),
+                            CenterName(Name: "Brother"),
+                            CenterName(Name: "Sister"),
+                            CenterName(Name: "Son"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Color(0xFFBF8989),
-                      //0xFFBF8989 CEAEAF E4B4B4
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                      onPressed: () =>
-                          setState(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage2(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
-                            );
-                          }),
-                      child: Text(
-                        "Next".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ),
+                  nextButtom(onp: () async {
+                    if (widget.age < 8) {
+                      services s = new services();
+                      var LoadedData;
+                      LoadedData = await s.all(answer);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GiftScreen(
+                                  productFromQuestion: LoadedData)));
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyQuestionPage2(
+                              age: widget.age,
+                              price: widget.price,
+                            )),
+                      );
+                    }
+                  }
                   ),
                 ],
               ),
@@ -587,10 +382,11 @@ class _MyQuestionPage extends State<MyQuestionPage> {
 }
 
 class MyQuestionPage2 extends StatefulWidget {
-  MyQuestionPage2({Key key,this.age,this.answerOfTheQuestion,this.price}) : super(key: key);
+  MyQuestionPage2({Key key, this.age, this.answerOfTheQuestion, this.price})
+      : super(key: key);
   final double price;
   final int age;
-  final List answerOfTheQuestion ;
+  final List answerOfTheQuestion;
 
   @override
   _MyQuestionPage2 createState() => _MyQuestionPage2();
@@ -622,22 +418,8 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "What is the gift occasion?",
-                            style: TextStyle(
-                              color: Color(0xFFBF8989),
-                              fontSize: 24,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  questionHeader(
+                    qHeader: "What is the gift occasion?",
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -649,92 +431,28 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                           looping: true,
                           onSelectedItemChanged: (int index) {},
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "Birthday",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Anniversary",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Graduation",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Achievement",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Wedding",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
+                            CenterName(Name: "Birthday"),
+                            CenterName(Name: "Graduation"),
+                            CenterName(Name: "Anniversary"),
+                            CenterName(Name: "Achievement"),
+                            CenterName(Name: "Wedding"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Color(0xFFBF8989),
-                      //0xFFBF8989 CEAEAF E4B4B4
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                      onPressed: () =>
-                          setState(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age :widget.age ,price: widget.price, )),
-                            );
-                          }),
-                      child: Text(
-                        "Next".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ),
+                  nextButtom(onp:() => setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyQuestionPage3(
+                            answerOfTheQuestion:
+                            widget.answerOfTheQuestion,
+                            age: widget.age,
+                            price: widget.price,
+                          )),
+                    );
+                  }),
                   ),
                 ],
               ),
@@ -744,7 +462,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
         ),
       );
     } //end if
-    else if (widget.age < 18) {
+    else if (widget.age < 18 && widget.age > 8) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -764,22 +482,8 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "What is the gift occasion?",
-                            style: TextStyle(
-                              color: Color(0xFFBF8989),
-                              fontSize: 24,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  questionHeader(
+                    qHeader: "What is the gift occasion?",
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -791,70 +495,26 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                           looping: true,
                           onSelectedItemChanged: (int index) {},
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "Birthday",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Graduation",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Achievement",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
+                            CenterName(Name: "Birthday"),
+                            CenterName(Name: "Graduation"),
+                            CenterName(Name: "Achievement"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Color(0xFFBF8989),
-                      //0xFFBF8989 CEAEAF E4B4B4
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                      onPressed: () =>
-                          setState(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
-                            );
-                          }),
-                      child: Text(
-                        "Next".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ),
+                  nextButtom(onp:() => setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyQuestionPage3(
+                            answerOfTheQuestion:
+                            widget.answerOfTheQuestion,
+                            age: widget.age,
+                            price: widget.price,
+                          )),
+                    );
+                  }),
                   ),
                 ],
               ),
@@ -885,23 +545,7 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "What is the gift occasion?",
-                            style: TextStyle(
-                              color: Color(0xFFBF8989),
-                              fontSize: 24,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  questionHeader(qHeader: "What is the gift occasion?"),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -912,82 +556,26 @@ class _MyQuestionPage2 extends State<MyQuestionPage2> {
                           looping: true,
                           onSelectedItemChanged: (int index) {},
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "Birthday",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Anniversary",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Achievement",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Wedding",
-                                style: TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFBF8989),
-                                ),
-                              ),
-                            ),
+                            CenterName(Name: "Birthday"),
+                            CenterName(Name: "Achievement"),
+                            CenterName(Name: "Anniversary"),
+                            CenterName(Name: "Wedding"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Color(0xFFBF8989), //0xFFBF8989 CEAEAF E4B4B4
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                      onPressed: () => setState(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyQuestionPage3(answerOfTheQuestion: widget.answerOfTheQuestion,age: widget.age,price: widget.price,)),
-                        );
-                      }),
-                      child: Text(
-                        "Next".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ),
+                  nextButtom(onp: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyQuestionPage3(
+                            answerOfTheQuestion: answer,
+                            age: widget.age,
+                            price: widget.price,
+                          )),);},
                   ),
-                ],
-              ),
+                ],),
               alignment: FractionalOffset.topCenter,
             ),
           ),
@@ -1005,14 +593,22 @@ class Interest {
     this.id,
     this.name,
   });
+
   @override
-  String toString(){
+  String toString() {
     return "$name";
   }
 }
 
 class MyQuestionPage3 extends StatefulWidget {
-  MyQuestionPage3({Key key,this.answerOfTheQuestion,this.age,this.categoryies,this.price, this.title=''}) : super(key: key);
+  MyQuestionPage3(
+      {Key key,
+        this.answerOfTheQuestion,
+        this.age,
+        this.categoryies,
+        this.price,
+        this.title = ''})
+      : super(key: key);
 
   final String title;
   final int age;
@@ -1025,18 +621,17 @@ class MyQuestionPage3 extends StatefulWidget {
 }
 
 class _MyQuestionPage3 extends State<MyQuestionPage3> {
-
   static List<Interest> _interest = [
-    Interest(id: 1, name: "Baby Products "),
-    Interest(id: 2, name: "Beauty & Personal Care "),
-    Interest(id: 3, name: "Clothing, Shoes & Jewelry "),
-    Interest(id: 4, name: "Electronics "),
-    Interest(id: 5, name: "Home & Kitchen "),
-    Interest(id: 6, name: "Office Products "),
-    Interest(id: 7, name: "Pet Supplies "),
-    Interest(id: 8, name: "Sports & Outdoors "),
-    Interest(id: 9, name: "Tools & Home Improvement "),
-    Interest(id: 10, name: "Toys & Games "),
+    Interest(id: 1, name: "Toys & Games"),
+    Interest(id: 2, name: "Sports & Outdoors"),
+    Interest(id: 3, name: "Clothing, Shoes & Jewelry"),
+    Interest(id: 4, name: "Electronics"),
+    Interest(id: 5, name: "Home & Kitchen"),
+    Interest(id: 6, name: "Office Products"),
+    Interest(id: 7, name: "Tools & Home Improvement"),
+    Interest(id: 8, name: "Beauty & Personal Care"),
+    Interest(id: 9, name: "Pet Supplies"),
+    Interest(id: 10, name: "Baby Products"),
   ];
   final _items = _interest
       .map((interest) => MultiSelectItem<Interest>(interest, interest.name))
@@ -1052,116 +647,121 @@ class _MyQuestionPage3 extends State<MyQuestionPage3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        height: 600,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(228, 180, 180, 1),
-        ),
-        child: Align(
-          alignment: FractionalOffset.bottomLeft,
-          child: Container(
-            height: 370,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(40),
-              ),
+      body: Column(children: [
+        Container(
+          height: 600,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('images/gift.gif'),
+              fit: BoxFit.cover,
             ),
-            child: SingleChildScrollView(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 40),
-                    MultiSelectBottomSheetField<Interest>(
-                      key: _multiSelectKey,
-                      initialChildSize: 0.7,
-                      maxChildSize: 0.95,
-                      title: Text("Interests"),
-                      buttonText: Text("Favorite Interests"),
-                      items: _items,
-                      searchable: true,
-                      validator: (values) {
-                        if (values == null || values.isEmpty) {
-                          return "Required";
-                        }
-                        return null;
-                      },
-                      onConfirm: (values) {
-                        setState(() {
-                          _selectedinterest = values;
-                        });
-                        _multiSelectKey.currentState.validate();
-                      },
-                      chipDisplay: MultiSelectChipDisplay(
-                        onTap: (item) {
+            color: Color.fromRGBO(228, 180, 180, 1),
+          ),
+          child: Align(
+            alignment: FractionalOffset.bottomLeft,
+            child: Container(
+              height: MediaQuery.of(context).size.height *0.4,
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(40),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 40),
+                      MultiSelectBottomSheetField<Interest>(
+                        key: _multiSelectKey,
+                        initialChildSize: 0.7,
+                        maxChildSize: 0.95,
+                        title: Text("Interests"),
+                        buttonText: Text("Favorite Interests"),
+                        items: _items,
+                        searchable: true,
+                        validator: (values) {
+                          if (values == null || values.isEmpty) {
+                            return "Required";
+                          }
+                          return null;
+                        },
+                        onConfirm: (values) {
                           setState(() {
-                            _selectedinterest.remove(item);
+                            _selectedinterest = values;
                           });
                           _multiSelectKey.currentState.validate();
                         },
+                        chipDisplay: MultiSelectChipDisplay(
+                          onTap: (item) {
+                            setState(() {
+                              _selectedinterest.remove(item);
+                            });
+                            _multiSelectKey.currentState.validate();
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: Center(
-        child: Container(
-          margin: EdgeInsets.only(top: 300),
+        Container(
+
+          margin: EdgeInsets.only(top: 30),
           // ignore: deprecated_member_use
           child: FlatButton(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            color: Color(0xFFBF8989),
+            color: Color.fromRGBO(228, 180, 180, 1),
+            //0xFFBF8989 CEAEAF E4B4B4
             textColor: Colors.white,
             padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-            onPressed: ()  async{
-              if(_selectedinterest.isEmpty){
+            onPressed: () async {
+              if (_selectedinterest.isEmpty) {
                 return _MyQuestionPage3();
-              }else {
-                //Loading Data
-                print("Loading");
-                services s = new services();
-                var LoadedData ;
-
+              } else {
                 // ignore: deprecated_member_use
-                if(widget.answerOfTheQuestion.isEmpty){
-                  var categories = new List();
-                  categories.add(_selectedinterest);
-                  LoadedData = await s.browseTheCategories(categories);
-                }else {
-                  var l = [10, 20, "Toys & Games ", "Sports & Outdoors "];
-                  answer.add(_selectedinterest);
-
-                  LoadedData = await s.all(l);
-                  // ignore: non_constant_identifier_names
-
+                var categories = new List();
+                if (answer.isEmpty) {
+                  for (int i = 0; i < _selectedinterest.length; i++) {
+                    String x = _selectedinterest[i].name;
+                    categories.add(x);
+                  }
+                } else {
+                  for (int i = 0; i < _selectedinterest.length; i++) {
+                    String x = _selectedinterest[i].name;
+                    answer.add(x);
+                  }
                 }
-                 //await s.recommend("Electronic Snap Circuits Mini Kits Classpack, FM Radio, Motion Detector, Music Box (Set of 5)");
-
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GiftScreen(productFromQuestion : LoadedData )));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => load(
+                          answer: answer,
+                          categories: categories,
+                        )));
               }
             },
             child: Text(
-              "search".toUpperCase(),
+              "Search".toUpperCase(),
               style: TextStyle(
                 fontSize: 14.0,
               ),
             ),
           ),
         ),
-      ),
+      ]),
     );
   }
 }
+

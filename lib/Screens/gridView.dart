@@ -7,7 +7,9 @@ import 'ProductDetailsScreen.dart';
 
 // ignore: must_be_immutable
 class GiftScreen extends StatefulWidget {
-  GiftScreen({this.productFromQuestion}) ;
+  final List answers ;
+  final List categories ;
+  GiftScreen({this.productFromQuestion , this.answers, this.categories}) ;
   var productFromQuestion ;
 
   @override
@@ -26,7 +28,10 @@ class _GiftScreenState extends State<GiftScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ProductScreen(product: widget.productFromQuestion[index],recommend: x,)),
+              builder: (context) => ProductScreen(product: widget.productFromQuestion[index],recommend: x,
+                  categories: widget.categories
+                  ,answer: widget.answers
+              )),
         );
       },
       child: Container(
@@ -58,7 +63,7 @@ class _GiftScreenState extends State<GiftScreen> {
                 ),
               ),
               Text(
-                ProductDetails["Category"].toString()+' \$',
+                ProductDetails["Selling Price"].toString()+' \$',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -85,10 +90,10 @@ class _GiftScreenState extends State<GiftScreen> {
         body: ListView(
           children: [
             //Search Bar
-           SearchBar(),
-          // End Search Bar
+            SearchBar(),
+            // End Search Bar
 
-          //Your Gift Text
+            //Your Gift Text
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
               child: Text(

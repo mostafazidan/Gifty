@@ -25,7 +25,7 @@ class _loadingScreenState extends State<loadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(228, 180, 180, 1),
+      backgroundColor: Color.fromRGBO(227, 179, 179, 1),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -35,7 +35,7 @@ class _loadingScreenState extends State<loadingScreen> {
                 backgroundColor: Colors.white,
                 radius: 50.0,
                 child: Icon(
-                  Icons.card_giftcard,
+                  Icons.card_giftcard_rounded,
                   color: Colors.black,
                   size: 50.0,
                 ),
@@ -46,7 +46,7 @@ class _loadingScreenState extends State<loadingScreen> {
               Text(
                 "Gift App",
                 style: TextStyle(
-                    fontFamily: 'Pacifico',
+                    /*fontFamily: 'Pacifico',*/
                     color: Colors.white,
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold
